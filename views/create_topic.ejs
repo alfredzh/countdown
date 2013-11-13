@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<title>一起倒计时</title>
+  	<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  	<meta name="viewport" id="viewport" content="initial-scale=1, minimum-scale=0, maximum-scale=1" />
+  	<meta name="format-detection" content="telephone=no" />
+  	<script type="text/javascript" src="/javascripts/jquery-1.8.2.min.js"></script>
+  	<style type="text/css">
+	    body{
+	      padding: 0;
+	      margin: 0;
+	      font-family: Helvetica;
+	    }
+	    p{
+	      padding: 0;
+	      margin:0;
+	    }
+	    .navbar{
+	      width: 100%;
+	      height: 50px;
+	      background: #EDEDED;
+	      border-bottom: solid 1px #b6b6b6;
+	    }
+	    .navbar_inner{
+	      position: relative;
+	      top: 14px;
+	      margin: 0px auto;
+	      width: 1060px;
+	    }
+	    .title{
+	      font-size: 20px;
+	    }
+	    .navbar_inner ul{
+	      position: relative;
+	      top: -34px;
+	      list-style: none;
+	      float: right;
+	    }
+	    .navbar_inner ul li{
+	      float: left;
+	      width: 64px;
+	      text-align: center;
+	      font-size: 14px;
+	      color: #4082C4;
+	    }
+	    a{
+	      text-decoration: none;
+	    }
+	    .main{
+	    	position: relative;
+	    	top: 30px;
+	    	width: 1060px;
+	    	height: 520px;
+	    	margin: 0px auto;
+	    	border: solid 1px #E6E6E6;
+	    	font-size: 14px;
+	    }
+	    .topic_title{
+	    	position: relative;
+	    	height: 42px;
+	    	background: #EDEDED;
+	    	color: #999;
+	    	font-size: 16px;
+	    }
+	    .topic_title span{
+	    	position: relative;
+	    	left: 20px;
+	    	top: 12px;
+	    }
+	    .main_inner{
+	    	position: relative;
+	    	left: 20px;
+	    }
+	    .main_inner input{
+	    	border-radius:5px; 
+	    	height: 20px;
+	    }
+	    .main_inner p{
+	    	position: relative;
+	    	margin-top: 5px;
+	    }
+	    .topic_input input{
+	    	width: 1015px;
+	    }
+	    textarea{
+	    	border-radius: 5px;
+	    	width: 1015px;
+	    	height: 250px;
+	    }
+	    .new_topic,.login_first{
+	      position: relative;
+	      top: 20px;
+	      width: 86px;
+	      height: 28px;
+	      left: 468px;
+	      text-align: center;
+	      border-radius: 3px;
+	    }
+	    .new_topic span,.login_first span{
+	    	position: relative;
+	    	top: 5px;
+	    }
+	    .new_topic{
+	    	color: #FFF;
+	    	font-weight: bold;
+	    	text-shadow:0 -1px 0 rgba(0,0,0,.25);
+	      background: -webkit-gradient(linear,0 0,0 100%,from( #62c462),to( #51a351));
+	      background: -moz-linear-gradient(top, #62c462, #51a351);
+	    }
+	    .login_first{
+	    	border:1px solid #ccc;
+	    	color: black;
+	    	background: -webkit-gradient(linear,0 0,0 100%,from( #fff),to( #e6e6e6));
+	    	background:-moz-linear-gradient(top, #fff, #e6e6e6);
+	    }
+	    .prompt{
+	    	text-align: center;
+	    	position: relative;
+	    	color: red;
+	    	top: 10px;
+	    	right: 18px;
+	    }
+	    .footer{
+	      position: relative;
+	      top: 50px;
+	      height: 200px;
+	      color: #B8ADAD;
+	      font-size: 14px;
+	      margin: 0px auto;
+	      width: 1060px;
+	      line-height: 20px;
+	    }
+  	</style>
+  </head>
+  <body>
+    <div class='navbar'>
+      <div class='navbar_inner'>
+        <p><span class='title'>一起倒计时</span></p>
+        <ul>
+          <li><a href='/yiqidaojishi'>首页</a></li>
+          <% if(!login_user) { %>
+          	<li><a href='/reg'>注册</a></li>
+          	<li><a href='/login'>登陆</a></li>
+          <% } %>
+          <% if(login_user) { %>
+          	<li><a href='/myspace'>我的空间</a></li>
+          	<li><a href='/logout'>注销</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+    <div class='main' data-user='<%= login_user.account%>'>
+    	<p class='topic_title'><span>发布话题</span></p>
+    	<div class='main_inner'>
+		<p>话题</p>
+		<p class='topic_input'><input></input></p>
+		<p>截止日期</p>
+		<p><input class='year'></input>-<input class='month'></input>-<input class='day'></input>　<input class='hour'></input>:<input class='minute'></input>:<input class='second'></input></p>
+		<p>描述</p>
+		<p><textarea class='description'></textarea></p>
+		<p class='prompt'><span></span></p>
+		<% if(login_user) { %>
+			<p class='new_topic'><span>发布话题</span></p>
+		<% } %>
+		<% if(!login_user) { %>
+			<a href='/login'><p class='login_first'><span>请先登陆</span></p></a>
+		<% } %>
+    	</div>
+    </div>
+    <hr style= 'position:relative;top:40px;' />
+    <div class='footer'>
+      <p>©2013-2014</p>
+      <p>本社区为开源系统，版本：0.1，欢迎贡献代码</p>
+      <p>如有问题，可联系QQ：313878731，邮箱：bs228@163.com</p>
+    </div>
+    <script>
+    	$(document).ready(function(){
+    		function check_date(year,month,day,hour,minute,second){
+    			if(!(/^[1-9]\d{3}$/.test(year))){
+    				tip('year_error');
+    				return 'error' ;
+    			}else if(!((/^\d{2}$/).test(month) && month*1<=12 && month*1>0)){
+    				tip('month_error');
+    				return 'error' ;
+    			//当月为３０天、２9天、２8天情况，日期加减部分会算为下个月
+    			}else if(!((/^\d{2}$/).test(day) && day*1<=31 && day*1>0)){
+    				tip('day_error');
+    				return 'error' ;
+    			}else if(!((/^\d{2}$/).test(hour) && hour*1<24 && hour*1>=0)){
+    				tip('hour_error');
+    				return 'error' ;
+    			}else if(!((/^\d{2}$/).test(minute) && minute*1<60 && minute*1>=0)){
+    				tip('minute_error');
+    				return 'error' ;
+    			}else if(!((/^\d{2}$/).test(second) && second*1<60 && second*1>=0)){
+    				tip('second_error');
+    				return 'error' ;
+    			}else{
+    				return 'ok' ;
+    			}
+    		}
+
+    		function tip(type){
+    			var dom = $('.prompt span') ;
+    			if(type == 'topic_null'){
+    				dom.text('话题不能为空！');
+    			}else if(type == 'date_null'){
+    				dom.text('日期填写不完整！');
+    			}else if(type == 'year_error'){
+    				dom.text('年份填写错误！请填写四位数字，并且第一位不为０！');
+    			}else if(type == 'month_error'){
+    				dom.text('月份填写错误！请填写两位数字！');
+    			}else if(type == 'day_error'){
+    				dom.text('日份填写错误！请填写两位数字！');
+    			}else if(type == 'hour_error'){
+    				dom.text('小时填写错误！请填写两位数字！');
+    			}else if(type == 'minute_error'){
+    				dom.text('分钟填写错误！请填写两位数字！');
+    			}else if(type == 'second_error'){
+    				dom.text('秒钟填写错误！请填写两位数字！');
+    			}else if(type == 'date_error'){
+    				dom.text('话题已过期！');
+    			}else if(type == 'description_null'){
+    				dom.text('描述不能为空！');
+    			}else if(type == 'create_error'){
+    				dom.text('创建失败！请稍后重试！');
+    			}else if(type == 'user_null'){
+    				dom.text('登陆过期，请重新登陆！');
+    			}else if(type == 'create_success'){
+    				dom.text('发布成功！获得３积分！');
+    			}
+    		}
+    		$('.new_topic').on('click',function(){
+    			var topic = $('.topic_input input').val();
+    			var year = $('.year').val();
+    			var month = $('.month').val();
+    			var day = $('.day').val();
+    			var hour = $('.hour').val();
+    			var minute = $('.minute').val();
+    			var second = $('.second').val();
+    			var account = $('.main').data('user');
+    			console.log(account);
+    			var description = $('.description').val();
+
+    			if(!topic){
+    				tip('topic_null');
+    			}else if(!year || !month || !day || !hour || !minute || !second){
+    				tip('date_null');
+    			}else if(!account){
+    				tip('user_null');
+    				window.location.href = '/login' ;
+    			}else if(!description){
+    				tip('description_null');
+    			}else{
+    				var date_check = check_date(year,month,day,hour,minute,second);
+    				console.log(topic);
+    				if(date_check == 'ok'){
+    					var date_str = year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' +  second ;
+		  			$.ajax({
+		  				url:'/doCreate_topic?topic='+topic+'&description='+description+'&account='+account+'&date='+new Date(date_str),
+		  				dataType:'json',
+		  				type:'get',
+		  				success:function(res){
+		  					if(res == 'success'){
+		  						setTimeout(function(){
+		  							tip('create_success');
+		  						},1000);
+		  						window.location.href = '/yiqidaojishi' ;
+		  					}else{
+		  						tip('create_error');
+		  					}
+		  				}
+		  			});
+    				}
+    			}
+
+    		});
+    	});
+    </script>
+  </body>
+</html>

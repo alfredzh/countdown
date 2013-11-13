@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>一起倒计时</title>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+		<meta name="viewport" id="viewport" content="initial-scale=1, minimum-scale=0, maximum-scale=1" />
+		<meta name="format-detection" content="telephone=no" />
+		<script type="text/javascript" src="/javascripts/jquery-1.8.2.min.js"></script>
+		<style>
+		    body{
+		      padding: 0;
+		      margin: 0;
+		      font-family: Helvetica;
+		    }
+		    p{
+		      padding: 0;
+		      margin:0;
+		    }
+		    .navbar{
+		      width: 100%;
+		      height: 50px;
+		      background: #EDEDED;
+		      border-bottom: solid 1px #b6b6b6;
+		    }
+		    .navbar_inner{
+		      position: relative;
+		      top: 14px;
+		      margin: 0px auto;
+		      width: 1060px;
+		    }
+		    .title{
+		      font-size: 20px;
+		    }
+		    .navbar_inner ul{
+		      position: relative;
+		      top: -34px;
+		      list-style: none;
+		      float: right;
+		    }
+		    .navbar_inner ul li{
+		      float: left;
+		      width: 64px;
+		      text-align: center;
+		      font-size: 14px;
+		      color: #4082C4;
+		    }
+		    a{
+		      text-decoration: none;
+		    }	
+		    .main,.user_topic,.user_join{
+		    	position: relative;
+		    	top: 30px;
+		    	width: 1060px;
+		    	margin: 0px auto;
+		    	border: solid 1px #E6E6E6;
+		    	font-size: 14px;
+		    }
+		    .user_topic,.user_join{
+		    	margin-top: 10px;
+		    }
+		    .topic_title{
+		    	position: relative;
+		    	height: 42px;
+		    	background: #EDEDED;
+		    	color: #999;
+		    	font-size: 16px;
+		    }
+		    .topic_title span{
+		    	position: relative;
+		    	left: 20px;
+		    	top: 12px;
+		    }
+		    .main_inner{
+		    	color: #333;
+		    	font-size: 14px;
+		    	position: relative;
+		    	left: 20px;
+		    	line-height: 22px;
+		    }
+		    .cell{
+		      height: 53px;
+		      border-bottom: solid 1px #E6E6E6;
+		      font-size: 15px;
+		      color: #08C;
+		    }
+		    .cell p{
+		      display: inline-block;
+		      position: relative;
+		      top: 19px;
+		      left: 10px;
+		      overflow: hidden;
+		      text-overflow:ellipsis;
+		      white-space: nowrap;
+		    }
+		    .cell p:first-child{
+		    	left:20px;
+		    }
+		    .cell_topic{
+		      width: 800px;
+		      text-align: left;
+		      color: #08C;
+		    }
+		    .cell_user{
+		      width: 150px;
+		      text-align: center;
+		      color: #B8ADAD;
+		    }
+		    .cell_date{
+		      width: 80px;
+		      text-align: center;
+		      color: #B8ADAD;
+		    }
+		    .footer{
+		      position: relative;
+		      top: 50px;
+		      height: 200px;
+		      color: #B8ADAD;
+		      font-size: 14px;
+		      margin: 0px auto;
+		      width: 1060px;
+		      line-height: 20px;
+		    }	
+		</style>
+	</head>
+	<body>
+	  <div class='navbar'>
+	    <div class='navbar_inner'>
+	      <p><span class='title'>一起倒计时</span></p>
+	      <ul>
+	        <li><a href='/yiqidaojishi'>首页</a></li>
+	        <% if(!login_user) { %>
+	        	<li><a href='/reg'>注册</a></li>
+	        	<li><a href='/login'>登陆</a></li>
+	        <% } %>
+	        <% if(login_user) { %>
+	        	<li><a href='/myspace'>我的空间</a></li>
+	        	<li><a href='/logout'>注销</a></li>
+	        <% } %>
+	      </ul>
+	    </div>
+	  </div>
+	  <div class='main'>
+	  	<p class='topic_title'><span>个人信息&nbsp;&nbsp;/&nbsp;&nbsp;hitbs228</span></p>
+	  	<div class='main_inner'>
+	  		<p>身份：<%= login_user.identity %></p>
+	  		<p>积分：<%= login_user.point %></p>
+	  		<p>邮箱：<%= login_user.email %></p>
+	  		<p>加入论坛时间：<%= login_user.join_at%></p>
+	  	</div>
+	  </div>
+	  <div class='user_topic'>
+	  	<p class='topic_title'><span>最近发布话题</span></p>
+	  	<% user_topic.forEach(function(i){ %>
+		  	<a href='/topic_info?topic_id=<%= i.topic_id %>' >
+			  	<div class='cell'>
+			  		<p class='cell_topic'><%= i.topic %></p>
+			  		<p class='cell_user'><%= i.account %></p>
+			  		<p class='cell_date'><%= i.time %></p>
+			  	</div>
+		  	</a>
+	  	<% }) %>
+	  </div>
+	  <div class='user_join'>
+	  	<p class='topic_title'><span>最近参与话题</span></p>
+	  	<% user_join.forEach(function(j){ %>
+		  	<a href='/topic_info?topic_id=<%= j.topic_id %>' >
+			  	<div class='cell'>
+			  		<p class='cell_topic'><%= j.topic %></p>
+			  		<p class='cell_user'><%= j.create_user %></p>
+			  		<p class='cell_date'><%= j.time %></p>
+			  	</div>
+		  	</a>
+	  	<% }) %>
+	  </div>
+	  <hr style= 'position:relative;top:40px;' />
+	  <div class='footer'>
+	    <p>©2013-2014</p>
+	    <p>本社区为开源系统，版本：0.1，欢迎贡献代码</p>
+	    <p>如有问题，可联系QQ：313878731，邮箱：bs228@163.com</p>
+	  </div>
+	</body>
+</html>

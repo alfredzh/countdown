@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>一起倒计时</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta name="viewport" id="viewport" content="initial-scale=1, minimum-scale=0, maximum-scale=1" />
+    <meta name="format-detection" content="telephone=no" />
+    <script type="text/javascript" src="/javascripts/jquery-1.8.2.min.js"></script>
+    <style type="text/css">
+      body{
+        padding: 0;
+        margin: 0;
+        font-family: Helvetica;
+      }
+      p{
+        padding: 0;
+        margin:0;
+      }
+      .navbar{
+        width: 100%;
+        height: 50px;
+        background: #EDEDED;
+        border-bottom: solid 1px #b6b6b6;
+      }
+      .navbar_inner{
+        position: relative;
+        top: 14px;
+        margin: 0px auto;
+        width: 1060px;
+      }
+      .title{
+        font-size: 20px;
+      }
+      .navbar_inner ul{
+        position: relative;
+        top: -34px;
+        list-style: none;
+        float: right;
+      }
+      .navbar_inner ul li{
+        float: left;
+        width: 64px;
+        text-align: center;
+        font-size: 14px;
+        color: #4082C4;
+      }
+      a{
+        text-decoration: none;
+      }
+      .main{
+        position: relative;
+        top: 30px;
+        margin: 0px auto;
+        width: 1060px;
+        height: 2252px;
+        border: solid 1px #E6E6E6;
+      }
+      .main_header{
+        background: #EDEDED;
+        height:42px;
+        font-size: 14px;
+      }
+      .current_topic{
+        position: relative;
+        top: 13px;
+        left: 10px;
+      }
+      .create_topic{
+        position: absolute;
+        top: 7px;
+        right: 12px;
+        width: 86px;
+        height: 28px;
+        text-align: center;
+        border-radius: 3px;
+        color: #FFF;
+        font-weight: bold;
+        text-shadow:0 -1px 0 rgba(0,0,0,.25);
+        background: -webkit-gradient(linear,0 0,0 100%,from( #62c462),to( #51a351));
+        background: -moz-linear-gradient(top, #62c462, #51a351);
+      }
+      .create_topic span{
+        position: relative;
+        top: 6px;
+      }
+      .cell{
+        height: 53px;
+        border-bottom: solid 1px #E6E6E6;
+        font-size: 15px;
+        color: #08C;
+      }
+      .cell p{
+        display: inline-block;
+        position: relative;
+        top: 19px;
+        left: 10px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
+      .cell_topic{
+        width: 800px;
+        text-align: left;
+        color: #08C;
+      }
+      .cell_user{
+        width: 150px;
+        text-align: center;
+        color: #B8ADAD;
+      }
+      .cell_date{
+        width: 80px;
+        text-align: center;
+        color: #B8ADAD;
+      }
+      .pagination{
+        height: 50px;
+        position: relative;
+        
+      }
+      .pagination ul{
+        margin: 10px;
+        padding: 0px;
+      }
+      .pagination ul li{
+        position: relative;
+        float: left;
+        height: 30px;
+        width: 31px;
+        border: 1px solid #DDD;
+        list-style: none;
+        font-size: 14px;
+        color: #08C;
+        text-align: center;
+      }
+      .pagination ul li:first-child{
+        width: auto;
+        border: 0px;
+        position: relative;
+        top: 7px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .pagination ul li:nth-last-child(2){
+        width: auto;
+        padding: 0px 10px;
+        border: 0px;
+        top: 3px;
+      }
+      .pagination ul li:nth-last-child(2) input{
+        width: 20px;
+      }
+      .pagination ul li:nth-last-child(3){
+        position: relative;
+        width: auto;
+        border: 0px;
+        top: 7px;
+        padding: 0px 10px;
+      }
+      .pagination ul li:last-child{
+        width: auto;
+        color: red;
+        border: 0px;
+        position: relative;
+        top: 7px;
+        left:30px; 
+      }
+      .pre span,.next span{
+        position: relative;
+        top: 7px;
+      }
+      .footer{
+        position: relative;
+        top: 50px;
+        height: 200px;
+        color: #B8ADAD;
+        font-size: 14px;
+        margin: 0px auto;
+        width: 1060px;
+        line-height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='navbar'>
+      <div class='navbar_inner'>
+        <p><span class='title'>一起倒计时</span></p>
+        <ul>
+          <li><a href='/yiqidaojishi'>首页</a></li>
+          <% if(login_user) { %>
+            <li><a href='/myspace'>我的空间</a></li>
+            <li><a href='/logout'>注销</a></li>
+          <% } %>
+          <% if(!login_user) { %>
+            <li><a href='/reg'>注册</a></li>
+            <li><a href='/login'>登陆</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+    <div class='main' data-page='<%= current_page %>' data-count='<%= page_count %>'>
+      <div class='main_header'>
+        <p class='current_topic'>当前话题</p>
+        <% if(login_user) { %>
+          <a href='/create_topic'><p class='create_topic'><span>发布话题</span></p></a>
+        <% } %>
+      </div>
+      <div class='topic_list'>
+        <% data.forEach(function(i){ %>
+        <a href='/topic_info?topic_id=<%= i.topic_id %>' >
+          <div class='cell'>
+            <p class='cell_topic'><%= i.topic %></p>
+            <p class='cell_user'><%= i.account %></p>
+            <p class='cell_date'><%= i.left %></p>
+          </div>
+        </a>
+        <% }) %>
+      </div>
+      <div class='pagination'>
+        <ul>
+          <li><span>共<%= page_count %>页</span></li>
+          <li class='pre'><span><<</span></li>
+          <li class='next'><span>>></span></li>
+          <li class='current_page'><span>当前第<%= current_page %>页</span></li>
+          <li>跳转至&nbsp;<input class='jump_des'></input>&nbsp;&nbsp;<button class='jump'>go</button></li>
+          <li class='promt'></li>
+        </ul>
+      </div>
+    </div>
+    <hr style= 'position:relative;top:40px;' />
+    <div class='footer'>
+      <p>©2013-2014</p>
+      <p>本社区为开源系统，版本：0.1，欢迎贡献代码</p>
+      <p>如有问题，可联系QQ：313878731，邮箱：bs228@163.com</p>
+    </div>
+    <script type='text/javascript'>
+      $(document).ready(function(){
+        var $main = $('.main') ,$promt = $('.promt');
+        var current_page = $main.data('page');
+        var count_page = $main.data('count');
+        $('.pre').on('click',function(){
+          if(current_page == 1){
+            $promt.text('当前为第一页');
+          }else{
+            window.location.href = '/yiqidaojishi?current_page='+current_page+"&des=pre" ;
+          }
+        });
+
+        $('.next').on('click',function(){
+          if(current_page == count_page){
+            $promt.text('当前为最后一页');
+          }else{
+            window.location.href = '/yiqidaojishi?current_page='+current_page+"&des=next" ;
+          }
+        });
+
+        $('.jump').on('click',function(){
+          var des = $('.jump_des').val();
+          if(!des){
+            $promt.text('请输入跳转页！');
+          }else if(!(/^[0-9]*[1-9][0-9]*$/.test(des*1) && des*1<=count_page)){
+            $promt.text('不存在该跳转页！');
+          }else{
+            window.location.href = '/yiqidaojishi?jump='+des ;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+/*
+ * migrate.js - A database agnostic migration system for Node.js.
+ * Copyright (c) 2010 - 2011 Ryan Sandor Richards
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+// Path to the migrations directory (relative to migrate)
+exports.migration_path = './migrations/';
+
+// Which DBMS to use for executing migrations
+exports.dbms = 'mysql';
+
+// Configuration for MySQL (username, password, etc.)
+exports.mysql = {
+  user: 'root',
+  password: '',
+  database: 'test',
+  host: '127.0.0.1',
+  port: '3306'
+};
+
+exports.orm_connect = exports.dbms + '://' + exports.mysql.user + ':' + exports.mysql.password + '@' + exports.mysql.host + ':' + exports.mysql.port + '/' + exports.mysql.database;
+
+//环境配置 开发环境为 false  产品环境为 true
+exports.environment = false;

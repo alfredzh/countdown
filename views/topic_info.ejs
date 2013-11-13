@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>一起倒计时</title>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+		<meta name="viewport" id="viewport" content="initial-scale=1, minimum-scale=0, maximum-scale=1" />
+		<meta name="format-detection" content="telephone=no" />
+		<script type="text/javascript" src="/javascripts/jquery-1.8.2.min.js"></script>
+		<style>
+		    body{
+		      padding: 0;
+		      margin: 0;
+		      font-family: Helvetica;
+		    }
+		    p{
+		      padding: 0;
+		      margin:0;
+		    }
+		    .navbar{
+		      width: 100%;
+		      height: 50px;
+		      background: #EDEDED;
+		      border-bottom: solid 1px #b6b6b6;
+		    }
+		    .navbar_inner{
+		      position: relative;
+		      top: 14px;
+		      margin: 0px auto;
+		      width: 1060px;
+		    }
+		    .title{
+		      font-size: 20px;
+		    }
+		    .navbar_inner ul{
+		      position: relative;
+		      top: -34px;
+		      list-style: none;
+		      float: right;
+		    }
+		    .navbar_inner ul li{
+		      float: left;
+		      width: 64px;
+		      text-align: center;
+		      font-size: 14px;
+		      color: #4082C4;
+		    }
+		    a{
+		      text-decoration: none;
+		    }
+		    .main,.response,.reply{
+		    	position: relative;
+		    	top: 30px;
+		    	width: 1060px;
+		    	margin: 0px auto;
+		    	border: solid 1px #E6E6E6;
+		    	font-size: 14px;
+		    }
+		    .response,.reply{
+		    	margin-top:10px; 
+		    }
+		    .topic_title{
+		    	position: relative;
+		    	height: 42px;
+		    	background: #EDEDED;
+		    	color: #999;
+		    	font-size: 16px;
+		    }
+		    .topic_title span{
+		    	position: relative;
+		    	left: 20px;
+		    	top: 12px;
+		    }
+		    .topic{
+		    	position: relative;
+		    	margin:10px 20px;
+		    	font-size: 24px;
+		    	font-weight: bold;
+		    	line-height: 35px;
+		    }
+		    .description{
+		    	position: relative;
+		    	margin: 10px 20px;
+		    	font-size: 14px;
+		    	line-height: 20px;
+		    	letter-spacing: 1px;
+		    }
+		    .topic_info{
+		    	position: relative;
+		    	margin: 10px 20px;
+		    	color: #ABABAB;
+		    }
+		    .res_title{
+		    	position: relative;
+		    	margin-left: 20px;
+		    	margin-top: 16px;
+		    	height: 30px;
+		    }
+		    .res_title span:first-child{
+		    	color: #333;
+		    }
+		    .res_title span:nth-last-child(2){
+		    	color: #005580;
+		    }
+		    .res_title span:last-child{
+		    	position: absolute;
+		    	right: 20px;
+		    }
+		    .res_content div{
+		    	color: #333;
+		    	margin-left: 20px;
+		    	margin-right: 20px;
+		    	margin-bottom: 10px;
+		    	line-height: 18px;
+		    	letter-spacing: 1px;
+		    }
+		    .reply textarea{
+		    	position: relative;
+		    	width: 1020px;
+		    	margin-left: 17px;
+		    	margin-top: 20px;
+		    	height: 200px;
+		    }
+		    .prompt{
+		    	text-align: center;
+		    	color: red;
+		    	position: relative;
+		    	top: 7px;
+		    }
+		    .reply button{
+		    	width: 58px;
+		    	height: 28px;
+		    	position: relative;
+		    	margin-top: 20px;
+		    	left: 500px;
+		    	margin-bottom: 10px; 
+		    }
+		    .footer{
+		      position: relative;
+		      top: 50px;
+		      height: 200px;
+		      color: #B8ADAD;
+		      font-size: 14px;
+		      margin: 0px auto;
+		      width: 1060px;
+		      line-height: 20px;
+		    }
+		</style>
+	</head>
+	<body>
+	  <div class='navbar'>
+	    <div class='navbar_inner'>
+	      <p><span class='title'>一起倒计时</span></p>
+	      <ul>
+	        <li><a href='/yiqidaojishi'>首页</a></li>
+	        <% if(!login_user) { %>
+	        	<li><a href='/reg'>注册</a></li>
+	        	<li><a href='/login'>登陆</a></li>
+	        <% } %>
+	        <% if(login_user) { %>
+	        	<li><a href='/myspace'>我的空间</a></li>
+	        	<li><a href='/logout'>注销</a></li>
+	        <% } %>
+	      </ul>
+	    </div>
+	  </div>
+	  <div class='main' data-id='<%= data.topic_id%>' data-user='<%= account%>'>
+	  	<p class='topic_title'><span>话题详情</span></p>
+	  	<div class='main_inner'>
+	  		<div class='topic'><%= data.topic %></div>
+	  		<hr style= 'position:relative;margin-left:20px;margin-right:20px;' color=#E6E6E6 />
+	  		<div class='description'><%= data.description %></div>
+	  		<hr style= 'position:relative;margin-left:20px;margin-right:20px;' color=#E6E6E6 />
+	  		<div class='topic_info'>
+	  			<p><span class='account_info'><%= data.account %></span>&nbsp;在<span class='time_info'><%= data.time %></span>发布</p>
+	  		</div>
+	  	</div>
+	  </div>
+	  <div class='response'>
+	  	<p class='topic_title'><span>回复</span></p>
+	  	<% list.forEach(function(i,index){ %>
+	  		<% index = index+1 %>
+		  	<div class='res_content'>
+		  		<p class='res_title'><span><%= i.account%></span>&nbsp;<span><%= i.time %></span><span>#<%= index %></span></p>
+		  		<div><%= i.content %></div>
+		  	</div>
+	  	<% }) %>
+	  </div>
+	  <div class='reply'>
+	  	<p class='topic_title'><span>添加回复</span></p>
+	  	<textarea></textarea>
+	  	<p class='prompt'></p>
+	  	<button>回复</botton>
+	  </div>
+	  <hr style= 'position:relative;top:40px;' />
+	  <div class='footer'>
+	    <p>©2013-2014</p>
+	    <p>本社区为开源系统，版本：0.1，欢迎贡献代码</p>
+	    <p>如有问题，可联系QQ：313878731，邮箱：bs228@163.com</p>
+	  </div>
+	  <script type='text/javascript'>
+	  	$(document).ready(function(){
+	  		var $prompt = $('.prompt') ;
+	  		var topic_id = $('.main').data('id'),user = $('.main').data('user');
+	  		$('button').on('click',function(){
+	  			var content = $('textarea').val();
+	  			if(!user){
+	  				$prompt.html('未登录或登陆过期，请重新登陆！');
+	  				setTimeout(function(){
+	  					window.location.href = '/login' ;
+	  				},2000);
+	  			}else if(!content){
+	  				$prompt.html('回复内容不能为空！');
+	  			}else{
+	  				$.ajax({
+	  					url:'/reply?topic_id='+topic_id+'&account='+user+'&content='+content,
+	  					type:'get',
+	  					dataType:'json',
+	  					success:function(res){
+	  						if(res == 'success'){
+	  							$prompt.html('回复成功！获得１积分！');
+	  							setTimeout(function(){
+	  								window.location.reload();
+	  							},2000);	  							
+	  						}else{
+	  							$prompt.html('回复失败！请稍后重试！');
+	  							setTimeout(function(){
+	  								window.location.reload();
+	  							},2000);
+	  						}
+	  					},
+	  					error:function(){
+	  						$prompt.html('回复失败！请稍后重试！');
+	  						setTimeout(function(){
+	  							window.location.reload();
+	  						},2000);
+	  					}
+	  				});
+
+	  			}
+	  		});
+	  	});
+	  </script>
+	</body>
+</html>
